@@ -102,11 +102,11 @@ class Ui(QtWidgets.QMainWindow):
                 for i1 in re.findall('exp+', val1):
                     val1 = val1.replace(i1, "_")
                     for x in re.findall('[x]+', val1):
-                        val1 = val1.replace(x, str(s[i]))
+                        val1 = val1.replace(x, '({})'.format(str(s[i]))
                     val1 = val1.replace("_", "exp")
             else:     
                 for x in re.findall('[x]+', val):
-                    val1 = val.replace(x, str(s[i]))   
+                    val1 = val.replace(x, '({})'.format(str(s[i]))   
             try:
                 y.append(eval(val1))
             except ZeroDivisionError :
