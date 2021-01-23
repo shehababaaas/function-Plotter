@@ -1,21 +1,21 @@
 # Shehab Eldin Tarek Master Micro
 # First we will import all libraries we will need
-from PyQt5 import QtWidgets, uic
 import sys
+from typing import Text
+from PySide2.QtWidgets import QDialog, QMessageBox
+from PySide2.QtCore import QLine
+from PySide2.QtGui import QWindow, QWindowStateChangeEvent
 import matplotlib
 from matplotlib import figure
 matplotlib.use('Qt5Agg')
 import re 
 import numpy as np 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QApplication, QDialog, QWidget, QPushButton, QMessageBox
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import pyqtSlot
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 import time
-
-from PyQt5 import*
+from PySide2.QtUiTools import QUiLoader
+from PySide2.QtWidgets import QApplication, QPushButton, QLineEdit
+from PySide2.QtCore import QFile, QObject
 # we will define classes for plotting
 class MplCanvas(FigureCanvasQTAgg):
     # we will insert suitable figure
@@ -23,16 +23,23 @@ class MplCanvas(FigureCanvasQTAgg):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
         super(MplCanvas, self).__init__(fig)
-
-class Ui(QtWidgets.QMainWindow):
-    # to describe what to do with the main window.
-    def __init__(self):
-        super(Ui, self).__init__()
-        uic.loadUi('C:\\Users\OWNER\Downloads\submit udacity\we.ui', self)
-        self.show()
-        # we will use pushbuttons and what to do 
-        self.pushButton.clicked.connect(self.clickme) 
-        self.pushButton_2.clicked.connect(self.clickme_2)
+class Form(QObject):
+    
+    def __init__(self, ui_file, parent=None):
+        super(Form, self).__init__(parent)
+        ui_file = QFile('C:\\Users\OWNER\Downloads\submit udacity\Design.ui')
+        ui_file.open(QFile.ReadOnly)
+        
+        loader = QUiLoader()
+        self.window = loader.load(ui_file)
+        ui_file.close()
+        btn = self.window.findChild(QPushButton, 'pushButton')
+        btn_1 = self.window.findChild(QPushButton, 'pushButton_2')
+        btn.clicked.connect(self.clickme)
+        btn_1.clicked.connect(self.clickme_2)
+        
+        
+        self.window.show()
     def mysecond(self,e,s):
         # here is the second window which the plotting will present itself.
         mydialog=QDialog()
@@ -114,8 +121,7 @@ class Ui(QtWidgets.QMainWindow):
             val1=val 
          # the plot will show in other window.   
         self.mysecond(y,s)
-        
-if __name__ == "__main__":        
-    app = QtWidgets.QApplication(sys.argv)
-    window = Ui()
-    app.exec_()
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    form = Form('mainwindow.ui')
+    sys.exit(app.exec_())
