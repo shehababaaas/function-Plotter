@@ -28,7 +28,7 @@ class Ui(QtWidgets.QMainWindow):
     # to describe what to do with the main window.
     def __init__(self):
         super(Ui, self).__init__()
-        uic.loadUi('C:\\Users\OWNER\Downloads\submit udacity\we.ui', self)
+        uic.loadUi('C:\\Users\OWNER\Downloads\submit udacity\Design.ui', self)
         self.show()
         # we will use pushbuttons and what to do 
         self.pushButton.clicked.connect(self.clickme) 
